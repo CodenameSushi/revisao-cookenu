@@ -12,15 +12,14 @@ import {
   Spinner,
   Link,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BASE_URL } from "../../constants/url";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { gotToHomePage, goToSignUpPage } from "../../routes/coordinator";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const LoginPage = () => {
-  // const [email, setEmail] = useState("")
-  // const [password, setPassword] = useState("")
 
   const [form, setForm] = useState({
     email: "",
@@ -35,14 +34,15 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  // const onChangeEmail = (e) => {
-  //     setEmail(e.target.value)
+  const context = useContext(GlobalContext)
 
-  // }
-  // const onChangePassword = (e) => {
-  //     setPassword(e.target.value)
+  useEffect(() => {
+    if (context.isAuth){
+      gotToHomePage(navigate)
+    }
+  })
 
-  // }
+
 
   const login = async () => {
     try {
@@ -55,8 +55,9 @@ const LoginPage = () => {
 
       const response = await axios.post(`${BASE_URL}/user/login`, body);
       window.localStorage.setItem("cookenu-token", response.data.token);
-
       gotToHomePage(navigate);
+      context.setIsAuth(true)
+
     } catch (error) {
       console.log(error);
       setIsLoading(false);
