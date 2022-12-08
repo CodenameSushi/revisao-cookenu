@@ -1,3 +1,4 @@
+
 export const gotToHomePage = (navigate) => {
      navigate("/")
 }
@@ -8,4 +9,7 @@ export const goToSignUpPage = (navigate) => {
 
 export const goToLoginPage = (navigate) => {
     navigate("/login")
+}
+export const goToDetailsPage = (navigate, recipeId) => {
+    navigate(`/recipe/${recipeId}`)
 }
